@@ -5,6 +5,12 @@ An external [Clappr player](https://github.com/clappr/clappr) plugin.
 
 ![Screenshot](screenshot.png)
 
+# Install
+
+```bash
+npm install --save clappr-logo-plugin
+```
+
 # Usage
 Add both Clappr and the logo plugin scripts to your HTML:
 

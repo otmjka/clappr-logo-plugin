@@ -6,7 +6,7 @@ var Clean = require('clean-webpack-plugin')
 var webpackConfig = require('./webpack-base-config')
 webpackConfig.entry = path.resolve(__dirname, 'src/index.js')
 
-if (process.env.npm_lifecycle_event === 'release') {
+if (process.env.npm_lifecycle_event === 'build') {
   webpackConfig.plugins.push(new webpack.LoaderOptionsPlugin({ minimize: true, debug: false }))
   webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
       compress: {

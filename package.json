@@ -6,8 +6,8 @@
   "description": "Clappr logo plugin",
   "scripts": {
     "test": "mocha --reporter nyan",
-    "start": "webpack-dev-server host 0.0.0.0 --content-base public/ --output-public-path latest/ --hot",
-    "build": "webpack --progress"
+    "start": "webpack-dev-server --host 0.0.0.0 --content-base public/ --output-public-path latest/ --hot",
+    "build": "webpack --progress --output-filename clappr-logo-plugin.min.js"
   },
   "repository": {
     "type": "git",
@@ -29,7 +29,7 @@
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-transform-es2015-classes": "^6.24.1",
     "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-env": "~1.6.0",
     "chai": "^4.1.2",
     "clappr": "^0.2.75",
     "clean-webpack-plugin": "^0.1.17",
@@ -45,7 +45,5 @@
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.9.1"
   },
-  "dependencies": {
-    "fsevents": "~1.1.2"
-  }
+  "dependencies": {}
 }

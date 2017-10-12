@@ -5,13 +5,13 @@ An external [Clappr player](https://github.com/clappr/clappr) plugin.
 
 ![Screenshot](screenshot.png)
 
-# Install
+## Install
 
 ```bash
 npm install --save clappr-logo-plugin
 ```
 
-# Usage
+## Usage
 Add both Clappr and the logo plugin scripts to your HTML:
 
 ```html
@@ -31,3 +31,9 @@ var player = new Clappr.Player({
   }
 });
 ```
+
+## Scripts
+
+- `npm start` launch public/index.html at http://0.0.0.0:port and you can see usage example
+- `npm build` build to dist/clappr-logo-plugin.min.js
+

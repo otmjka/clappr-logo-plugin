@@ -1,5 +1,5 @@
 import {UIContainerPlugin, Events} from 'clappr'
-import templater from 'clappr/src/base/template'
+import t from 'clappr/src/base/template'
 
 import {calculateSize} from './utils'
 import logoHTML from './templates/logo.html'
@@ -7,8 +7,10 @@ import logoStyle from './styles/logo.scss'
 
 
 export default class LogoPlugin extends UIContainerPlugin {
-  get name() { return 'logo' }
-  get template() {return templater(logoHTML)}
+
+  get name() {return 'logo'}
+
+  get template() {return t(logoHTML)}
 
   get attributes() {
     return {
@@ -22,8 +24,44 @@ export default class LogoPlugin extends UIContainerPlugin {
   }
 
   bindEvents() {
-    this.listenTo(this.container, Events.CONTAINER_READY, this.render)
+    window.addEventListener("resize", this.setPosition);
+    this.listenTo(this.container, Events.CONTAINER_STOP, this.onStop)
+    this.listenTo(this.container, Events.CONTAINER_PLAY, this.onPlay)
     this.listenTo(this.container, Events.CONTAINER_LOADEDMETADATA, this.setPosition)
+  }
+
+  stopListening() {
+    window.removeEventListener("resize", this.setPosition);
+    super.stopListening()
+  }
+
+  onPlay() {
+    this.hasStartedPlaying = true
+    this.update()
+  }
+
+  onStop() {
+    this.hasStartedPlaying = false
+    this.playRequested = false
+    this.update()
+  }
+
+  update() {
+    if (!this.shouldRender) {return}
+
+    if (!this.hasStartedPlaying) {
+      this.$el.hide()
+    } else {
+      this.$el.show()
+    }
+  }
+
+  constructor(container) {
+    super(container)
+    this.setPosition = this.setPosition.bind(this)
+    this.hasStartedPlaying = false
+    this.playRequested = false
+    this.render()
   }
 
   render() {
@@ -31,13 +69,13 @@ export default class LogoPlugin extends UIContainerPlugin {
     this.$el.html(this.template())
     this.setLogoStyles()
     this.setLogoImgAttrs()
-    this.$el.hide()
     this.container.$el.append(this.$el.get(0))
+    this.update()
     return this
   }
 
   setLogoImgAttrs() {
-    const {logo, logo: {path: imgUrl, width = 60, height = 60}} = this.options
+    const {logo: {path: imgUrl, width = 60, height = 60}} = this.options
     this.$logoContainer = this.$el.find('.clappr-logo')
     const $logo = this.$logoContainer.find('.clappr-logo-img')
     $logo.attr({
@@ -71,7 +109,7 @@ export default class LogoPlugin extends UIContainerPlugin {
     this.setStyles(logo, ['top', 'bottom'], el, vertical)
     this.setStyles(logo, ['left', 'right'], el, horizontal)
 
-    this.$el.show()
+    this.update()
   }
 
   setStyles(opts, props, el, value) {
@@ -87,6 +125,6 @@ export default class LogoPlugin extends UIContainerPlugin {
   setLogoStyles() {
     // put inline styles
     this.$el.append('<style class="clappr-style"></style>')
-    this.$el.find('.clappr-style').html(templater(logoStyle.toString()))
+    this.$el.find('.clappr-style').html(t(logoStyle.toString()))
   }
 }
